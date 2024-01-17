@@ -2,7 +2,7 @@
 import './globals.css';
 import './styles.scss';
 import { Inter } from 'next/font/google';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import Sidebar from '@components/Sidebar';
 import SidebarDesktop from '@components/SidebarDesktop';
 import NavigationMobile from '@components/NavigationMobile';
