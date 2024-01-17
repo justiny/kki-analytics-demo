@@ -47,14 +47,15 @@ export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
 
   const start = searchParams.get('start');
+
   const yesterday =
     new Date(new Date().setDate(new Date().getDate() - 1))
       .toISOString()
       .split('T')[0]
       .replace(/-/g, '') + 'T00';
 
-  const startDate = `${start}`;
-  const endDate = `${yesterday}`;
+  const startDate = '20240101T00';
+  const endDate = '20240116T00';
 
   console.log('✅ startDate', startDate);
   console.log('✅ endDate', endDate);
