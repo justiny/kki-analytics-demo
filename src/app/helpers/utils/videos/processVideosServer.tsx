@@ -1,5 +1,6 @@
-export const processVideosServer = (fetchedData: any[]) => {
+export const processVideosServer = (fetchedData: any[], siteName: string) => {
   const groupedVideos = fetchedData.reduce((acc, item) => {
+    if (item.siteName !== siteName) return acc;
     (acc[item.videoStartTime] = acc[item.videoStartTime] || []).push(item);
     return acc;
   }, {});

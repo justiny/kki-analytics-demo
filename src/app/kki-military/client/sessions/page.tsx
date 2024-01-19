@@ -1,6 +1,6 @@
 'use client';
 import { useState } from 'react';
-import { patientTitle } from '@helpers/utils/Globals';
+import { militaryTitle } from '@helpers/utils/Globals';
 import { processSessions } from '@utils/sessions/processSessions';
 import { SessionTable } from '@components/sessions/SessionTable';
 import { ArrowPathIcon } from '@heroicons/react/24/outline';
@@ -12,7 +12,7 @@ import DateDropdown from '@components/DateDropdown';
 import moment from 'moment-timezone';
 
 export default function SessionsClientPage() {
-  const siteName = patientTitle;
+  const siteName = militaryTitle;
   const [selectedDate, setSelectedDate] = useState(calculateStartDate(2));
   const { isLoading, error, data } = useClientData(
     selectedDate,
@@ -31,7 +31,7 @@ export default function SessionsClientPage() {
     <div className='px-4 sm:px-6 lg:px-8'>
       <div className='sm:flex sm:items-center mb-20'>
         <TableHeader
-          title={`KKI ${patientTitle}`}
+          title={`KKI ${militaryTitle}`}
           subTitle='Sessions Data'
           type='Client'
           description='All sessions data for all KKI Patient users.'

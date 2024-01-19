@@ -1,6 +1,9 @@
-export const processSessions = (fetchedData: any) => {
+export const processSessions = (fetchedData: any, siteName: string) => {
   return fetchedData
-    .filter((item: any) => item.eventType === 'Page View')
+    .filter(
+      (item: any) =>
+        item.eventType === 'Page View' && item.siteName === siteName
+    )
     .reduce((acc: any, item: any) => {
       if (!acc[item.sessionId]) {
         acc[item.sessionId] = {

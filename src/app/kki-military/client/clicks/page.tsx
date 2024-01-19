@@ -1,6 +1,6 @@
 'use client';
 import { useState } from 'react';
-import { patientTitle } from '@helpers/utils/Globals';
+import { militaryTitle } from '@helpers/utils/Globals';
 import { processClicks } from '@utils/clicks/processClicks';
 import { ClickTable } from '@components/clicks/ClickTable';
 import { ArrowPathIcon } from '@heroicons/react/24/outline';
@@ -11,7 +11,7 @@ import calculateStartDate from '@helpers/utils/CalculateStartDate';
 import DateDropdown from '@components/DateDropdown';
 
 export default function ClicksClientPage() {
-  const siteName = patientTitle;
+  const siteName = militaryTitle;
   const [selectedDate, setSelectedDate] = useState(calculateStartDate(1));
 
   const { isLoading, error, data } = useClientData(
@@ -31,7 +31,7 @@ export default function ClicksClientPage() {
     <div className='px-4 sm:px-6 lg:px-8'>
       <div className='sm:flex sm:items-center mb-20'>
         <TableHeader
-          title={`KKI ${patientTitle}`}
+          title={`KKI ${militaryTitle}`}
           subTitle='Clicks Data'
           type='Client'
           description='All clicks data for all KKI Patient users.'

@@ -1,6 +1,7 @@
 interface EventData {
   userId: string;
   eventType: string;
+  siteName: string;
 }
 
 interface ProcessedClickDataItem {
@@ -16,9 +17,13 @@ interface ProcessedClickData {
   [userId: string]: ProcessedClickDataItem;
 }
 
-export const processClicks = (fetchedData: EventData[]): ProcessedClickData => {
+export const processClicks = (
+  fetchedData: EventData[],
+  siteName: string
+): ProcessedClickData => {
   return fetchedData.reduce((acc: ProcessedClickData, item: EventData) => {
-    // Initialize user data in accumulator if not already present
+    if (item.siteName !== siteName) return acc;
+
     if (!acc[item.userId]) {
       acc[item.userId] = {
         userId: item.userId,
@@ -30,17 +35,24 @@ export const processClicks = (fetchedData: EventData[]): ProcessedClickData => {
       };
     }
 
-    // Increment appropriate counts based on eventType
-    if (item.eventType === 'Link Click') {
-      acc[item.userId].clickEvents += 1;
-    } else if (item.eventType === 'Nav Link Click') {
-      acc[item.userId].navClicks += 1;
-    } else if (item.eventType === 'Video Watched') {
-      acc[item.userId].videoClicks += 1;
-    } else if (item.eventType === 'Accordion Link Click') {
-      acc[item.userId].accordionClicks += 1;
-    } else if (item.eventType === 'Tutorial Quick Links') {
-      acc[item.userId].tutorialClicks += 1;
+    switch (item.eventType) {
+      case 'Link Click':
+        acc[item.userId].clickEvents += 1;
+        break;
+      case 'Nav Link Click':
+        acc[item.userId].navClicks += 1;
+        break;
+      case 'Video Watched':
+        acc[item.userId].videoClicks += 1;
+        break;
+      case 'Accordion Link Click':
+        acc[item.userId].accordionClicks += 1;
+        break;
+      case 'Tutorial Quick Links':
+        acc[item.userId].tutorialClicks += 1;
+        break;
+      default:
+        break;
     }
 
     return acc;

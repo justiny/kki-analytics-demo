@@ -40,35 +40,26 @@ interface EventData {
 
 const gunzip = promisify(zlib.gunzip);
 
-export async function GET() {
+export async function GET(request: Request) {
   const API_ENDPOINT = 'https://amplitude.com/api/2/export';
   const API_KEY = '1ca386624bb32db4c16b010e49422a2c';
   const SECRET_KEY = '4a3d4d72b960339acbc6510949755d4e';
-  // adjust dates for specific range of data
-  // const startYear = '2023';
-  // const startMonth = '01';
-  // const startDay = '14';
-  // const startDate = `${startYear}${startMonth}${startDay}T00`;
-  // const startDate = '20231225T00';
+  const { searchParams } = new URL(request.url);
 
-  // const endYear = '2024';
-  // const endMonth = '01';
-  // const endDay = '15';
-  // const endDate = `${endYear}${endMonth}${endDay}T00`;
-  // const endDate = '20240114T00';
+  const start = searchParams.get('start');
+  const startDate = start;
 
-  // Currently set to pull data from the last 5 days
-  const today = new Date().toISOString().split('T')[0].replace(/-/g, '');
-  const endDate = `${today}T00`;
+  const currentDateTime = new Date();
+  const endDate = new Date(currentDateTime.getTime() + 24 * 60 * 60 * 1000);
+  const formattedEndDate =
+    endDate.toISOString().split('T')[0].replace(/-/g, '') + 'T00';
 
-  const now = new Date();
-  now.setDate(now.getDate() - 5);
-  const yesterday = now.toISOString().split('T')[0].replace(/-/g, '');
-  const startDate = `${yesterday}T00`;
+  // console.log('✅ startDate server', startDate);
+  // console.log('✅ endDate server', formattedEndDate);
 
   try {
     const response = await fetch(
-      `${API_ENDPOINT}?start=${startDate}&end=${endDate}`,
+      `${API_ENDPOINT}?start=${startDate}&end=${formattedEndDate}`,
       {
         headers: {
           Authorization: `Basic ${Buffer.from(
@@ -80,7 +71,7 @@ export async function GET() {
     );
 
     if (!response.ok) {
-      throw new Error(`Error: ${response.statusText}`);
+      throw new Error(`❌ Error: ${response.statusText}`);
     }
 
     const buffer = await response.arrayBuffer();
@@ -106,13 +97,12 @@ export async function GET() {
             event.event_type === 'session_start' ||
             event.event_type === 'session_end' ||
             event.event_type === 'Video Watched' ||
-            // Legacy Video events that are no longer used
-            event.event_type === 'Video Play' ||
-            event.event_type === 'Video Pause' ||
-            event.event_type === 'Video Complete' ||
-            event.event_type === 'Video Progress' ||
             event.event_type === 'Link Click' ||
             event.event_type === 'Nav Link Click' ||
+            event.event_type === 'Video Play Time' ||
+            event.event_type === 'Video Play' ||
+            event.event_type === 'Video Pause' ||
+            event.event_type === 'Video Progress' ||
             event.event_type === 'Accordion Link Click' ||
             event.event_type === 'Tutorial Quick Links' ||
             event.event_type === 'Page View' ||
@@ -122,6 +112,8 @@ export async function GET() {
           ) {
             return;
           }
+
+          console.log('all events: ', event.event_type);
 
           // Native Event properties
           const userId = event.user_id;
@@ -245,6 +237,7 @@ export async function GET() {
         });
       }
     }
+
     return Response.json(allEvents);
   } catch (error) {
     console.error('Error:', error);

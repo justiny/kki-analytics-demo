@@ -47,22 +47,19 @@ export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
 
   const start = searchParams.get('start');
+  const startDate = start;
 
-  const yesterday =
-    new Date(new Date().setDate(new Date().getDate() - 1))
-      .toISOString()
-      .split('T')[0]
-      .replace(/-/g, '') + 'T00';
-
-  const startDate = '20240101T00';
-  const endDate = '20240116T00';
+  const currentDateTime = new Date();
+  const endDate = new Date(currentDateTime.getTime() + 24 * 60 * 60 * 1000);
+  const formattedEndDate =
+    endDate.toISOString().split('T')[0].replace(/-/g, '') + 'T00';
 
   console.log('✅ startDate', startDate);
-  console.log('✅ endDate', endDate);
+  console.log('✅ endDate', formattedEndDate);
 
   try {
     const response = await fetch(
-      `${API_ENDPOINT}?start=${startDate}&end=${endDate}`,
+      `${API_ENDPOINT}?start=${startDate}&end=${formattedEndDate}`,
       {
         headers: {
           Authorization: `Basic ${Buffer.from(
@@ -117,6 +114,8 @@ export async function GET(request: Request) {
             return;
           }
 
+          // console.log('✅ event', event);
+
           // Native Event properties
           const userId = event.user_id;
           const eventTime = event.event_time;
@@ -170,6 +169,7 @@ export async function GET(request: Request) {
             eventTime,
             eventType,
             sessionId,
+            siteName,
           };
 
           switch (event.event_type) {
@@ -188,8 +188,8 @@ export async function GET(request: Request) {
               break;
 
             case 'Page View':
-              eventData.referrer = referrer;
               eventData.siteName = siteName;
+              eventData.referrer = referrer;
               eventData.pageUrl = pageUrl;
               eventData.pageDuration = pageDuration;
               eventData.pageBegin = pageBegin;

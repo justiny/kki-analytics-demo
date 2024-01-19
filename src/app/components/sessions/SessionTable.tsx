@@ -80,7 +80,7 @@ export const SessionTable = ({ sessionData }: any) => {
       <DownloadCsvButton
         data={tableData}
         fileName='session-data.csv'
-        classes='absolute right-[150px] top-0 border rounded-full px-2 py-2 hover:border-gray-300'
+        classes='rounded-full px-2 py-2 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 right-[140px] top-1 absolute'
       />
       <table className='analytics-table'>
         <thead>
