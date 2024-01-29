@@ -3,10 +3,11 @@ import React from 'react';
 import TableControls from '../table/TableControls';
 import { TableHead } from '../table/TableHead';
 import { TableBody } from '../table/TableBody';
+import { Tooltip } from '@components/utils/Tooltip';
+import { QuestionMarkCircleIcon } from '@heroicons/react/24/outline';
 
 import {
   createColumnHelper,
-  flexRender,
   getCoreRowModel,
   getPaginationRowModel,
   useReactTable,
@@ -30,26 +31,59 @@ export const EngagementTable = ({ clickData }: any) => {
     columnHelper.accessor('pageReferrer', {
       header: () => 'Referral Source',
     }),
-    // columnHelper.accessor('sessionTotal', {
-    //   header: () => 'Session',
-    // }),
     columnHelper.accessor('clickTotal', {
-      header: () => 'Click Events Total',
+      id: 'clickTotal',
+      header: () => (
+        <Tooltip title='Total Click Events on Page Visit'>
+          Click Events Total{' '}
+          <QuestionMarkCircleIcon className='h-4 w-4 inline-block absolute right-[-5px] top-[-5px]' />
+        </Tooltip>
+      ),
     }),
     columnHelper.accessor('hyperlinkClicks', {
-      header: () => 'Hyperlink Clicks',
+      id: 'hyperlinkClicks',
+      header: () => (
+        <Tooltip title='Clicks within Rich Text Editor'>
+          Hyperlink Clicks{' '}
+          <QuestionMarkCircleIcon className='h-4 w-4 inline-block absolute right-1 top-[-5px]' />
+        </Tooltip>
+      ),
     }),
     columnHelper.accessor('navigationClicks', {
-      header: () => 'Navigation Clicks',
+      id: 'navigationClicks',
+      header: () => (
+        <Tooltip title='Clicks on Quick Link Navigation'>
+          Navigation Clicks
+          <QuestionMarkCircleIcon className='h-4 w-4 inline-block absolute right-[-2px] top-[-5px]' />
+        </Tooltip>
+      ),
     }),
     columnHelper.accessor('accordionClicks', {
-      header: () => 'Accordion Clicks',
+      id: 'accordionClicks',
+      header: () => (
+        <Tooltip title='Clicks on Accordion titles'>
+          Accordion Clicks
+          <QuestionMarkCircleIcon className='h-4 w-4 inline-block absolute right-[-1px] top-[-5px]' />
+        </Tooltip>
+      ),
     }),
     columnHelper.accessor('videoClicks', {
-      header: () => 'Video Clicks',
+      id: 'videoClicks',
+      header: () => (
+        <Tooltip title='Clicks on Videos'>
+          Video Clicks
+          <QuestionMarkCircleIcon className='h-4 w-4 inline-block absolute right-[25px] top-[-5px]' />
+        </Tooltip>
+      ),
     }),
     columnHelper.accessor('otherClicks', {
-      header: () => 'Other Clicks',
+      id: 'otherClicks',
+      header: () => (
+        <Tooltip title='All other clicks'>
+          Other Clicks
+          <QuestionMarkCircleIcon className='h-4 w-4 inline-block absolute right-[25px] top-[-5px]' />
+        </Tooltip>
+      ),
     }),
   ];
 
@@ -71,9 +105,9 @@ export const EngagementTable = ({ clickData }: any) => {
 
   return (
     <>
-      <div className='mt-[20px] flow-root'>
+      <div className='mt-[20px] flow-root relative'>
         <div className='overflow-x-auto'>
-          <div className='inline-block min-w-full py-2 align-middle'>
+          <div className='inline-block min-w-full py-2 align-middle pt-12'>
             <table className='min-w-full divide-y divide-gray-300'>
               <TableHead table={table} />
               <TableBody table={table} />

@@ -14,7 +14,7 @@ export const TableHead = ({ table }: any) => {
                   <th
                     key={header.id}
                     scope='col'
-                    className='py-4 pl-4 pr-3 text-left text-xs font-semibold text-gray-900 sm:pl-6 lg:pl-8 min-w-[160px] first-of-type:pl-0'
+                    className='pb-4 pl-4 pr-3 text-left text-xs font-semibold text-gray-900 sm:pl-6 lg:pl-8 min-w-[160px] first-of-type:pl-0'
                   >
                     {flexRender(
                       header.column.columnDef.header,
