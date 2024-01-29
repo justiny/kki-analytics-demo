@@ -6,7 +6,7 @@ import { useState } from 'react';
 import Sidebar from '@components/Sidebar';
 import SidebarDesktop from '@components/SidebarDesktop';
 import NavigationMobile from '@components/NavigationMobile';
-import Hydrate from '@global/helpers/utils/Hydrate';
+import Hydrate from '@global/Hydrate';
 import Provider from '@components/Provider';
 
 const inter = Inter({ subsets: ['latin'] });
