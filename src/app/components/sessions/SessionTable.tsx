@@ -10,6 +10,8 @@ import { DownloadCsvButton } from '@components/utils/DownloadCsvButton';
 import TableControls from '../table/TableControls';
 import { TableHead } from '../table/TableHead';
 import { TableBody } from '../table/TableBody';
+import { Tooltip } from '@components/utils/Tooltip';
+import { QuestionMarkCircleIcon } from '@heroicons/react/24/outline';
 
 export const SessionTable = ({ sessionData }: any) => {
   const columnHelper = createColumnHelper();
@@ -19,7 +21,7 @@ export const SessionTable = ({ sessionData }: any) => {
     columnHelper.accessor('userId', { header: () => 'User' }),
     columnHelper.accessor('eventTime', { header: () => 'Date/Time' }),
     columnHelper.accessor('pageEngagement', {
-      header: () => 'Engagement Time',
+      header: () => 'Engagement Time*',
       cell: (info) => `${(info.getValue() / 1000).toFixed(2)}`,
     }),
     columnHelper.accessor('totalDuration', {
@@ -29,26 +31,59 @@ export const SessionTable = ({ sessionData }: any) => {
     columnHelper.accessor('pageReferrer', {
       header: () => 'Referral Source',
     }),
-    // columnHelper.accessor('sessionTotal', {
-    //   header: () => 'Session',
-    // }),
     columnHelper.accessor('clickTotal', {
-      header: () => 'Click Events Total',
+      id: 'clickTotal',
+      header: () => (
+        <Tooltip title='Total Click Events on Page Visit'>
+          Click Events Total{' '}
+          <QuestionMarkCircleIcon className='h-4 w-4 inline-block absolute right-[-5px] top-[-5px]' />
+        </Tooltip>
+      ),
     }),
     columnHelper.accessor('hyperlinkClicks', {
-      header: () => 'Hyperlink Clicks',
+      id: 'hyperlinkClicks',
+      header: () => (
+        <Tooltip title='Clicks within Rich Text Editor'>
+          Hyperlink Clicks{' '}
+          <QuestionMarkCircleIcon className='h-4 w-4 inline-block absolute right-1 top-[-5px]' />
+        </Tooltip>
+      ),
     }),
     columnHelper.accessor('navigationClicks', {
-      header: () => 'Navigation Clicks',
+      id: 'navigationClicks',
+      header: () => (
+        <Tooltip title='Clicks on Quick Link Navigation'>
+          Navigation Clicks
+          <QuestionMarkCircleIcon className='h-4 w-4 inline-block absolute right-[-2px] top-[-5px]' />
+        </Tooltip>
+      ),
     }),
     columnHelper.accessor('accordionClicks', {
-      header: () => 'Accordion Clicks',
+      id: 'accordionClicks',
+      header: () => (
+        <Tooltip title='Clicks on Accordion titles'>
+          Accordion Clicks
+          <QuestionMarkCircleIcon className='h-4 w-4 inline-block absolute right-[-1px] top-[-5px]' />
+        </Tooltip>
+      ),
     }),
     columnHelper.accessor('videoClicks', {
-      header: () => 'Video Clicks',
+      id: 'videoClicks',
+      header: () => (
+        <Tooltip title='Clicks on Videos'>
+          Video Clicks
+          <QuestionMarkCircleIcon className='h-4 w-4 inline-block absolute right-[25px] top-[-5px]' />
+        </Tooltip>
+      ),
     }),
     columnHelper.accessor('otherClicks', {
-      header: () => 'Other Clicks',
+      id: 'otherClicks',
+      header: () => (
+        <Tooltip title='All other clicks'>
+          Other Clicks
+          <QuestionMarkCircleIcon className='h-4 w-4 inline-block absolute right-[25px] top-[-5px]' />
+        </Tooltip>
+      ),
     }),
   ];
 

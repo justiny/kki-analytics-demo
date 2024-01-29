@@ -15,7 +15,7 @@ export default function DateSelectionDropdown({ handleDateSelection }: any) {
   };
 
   return (
-    <Menu as='div' className='relative inline-block text-left ml-5'>
+    <Menu as='div' className='relative inline-block text-left ml-5 z-10'>
       <div>
         <Menu.Button className='inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-3 text-xs font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 items-center'>
           {selectedRange}
@@ -35,12 +35,15 @@ export default function DateSelectionDropdown({ handleDateSelection }: any) {
         leaveFrom='transform opacity-100 scale-100'
         leaveTo='transform opacity-0 scale-95'
       >
-        <Menu.Items className='absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none'>
+        <Menu.Items className='absolute right-0 z-auto mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none bg-white'>
           <div className='py-1'>
             {[
               { label: 'Yesterday', days: 1 },
               { label: 'Last 7 days', days: 7 },
               { label: 'Last 30 days', days: 30 },
+              { label: 'Last 6 months', days: 180 },
+              // leave one day off to avoid timezone issues
+              { label: 'Last 12 months', days: 364 },
             ].map((item) => (
               <Menu.Item key={item.label}>
                 {({ active }) => (
