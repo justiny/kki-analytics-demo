@@ -1,22 +1,30 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { patientTitle } from '@helpers/utils/Globals';
 import { processSessionsServer } from '@utils/sessions/processSessionsServer';
+import { SessionTable } from '@components/sessions/SessionTable';
 import { ArrowPathIcon } from '@heroicons/react/24/outline';
 import { DownloadCsvButton } from '@components/utils/DownloadCsvButton';
 import { TableHeader } from '@components/table/TableHeader';
-import { useServerData } from '@hooks/useServerData';
+import { useClientData } from '@hooks/useClientData';
 import calculateStartDate from '@helpers/utils/CalculateStartDate';
 import DateDropdown from '@components/DateDropdown';
-import SessionList from './SessionList';
+import moment from 'moment-timezone';
 
 export default function SessionsServerPage() {
   const siteName = patientTitle;
   const [selectedDate, setSelectedDate] = useState(calculateStartDate(2));
-  const { isLoading, error, data } = useServerData(
+  const { isLoading, error, data } = useClientData(
+    '/api/mock/server/engagement',
+    // '/api/client/engagement',
     selectedDate,
     (fetchedData) => processSessionsServer(fetchedData, siteName)
   );
+
+  useEffect(() => {
+    const documentTitle = `KKI ${patientTitle} | Sessions - Server`;
+    document.title = documentTitle;
+  }, []);
 
   const handleDateSelection = (days: any) => {
     setSelectedDate(calculateStartDate(days));
@@ -37,15 +45,47 @@ export default function SessionsServerPage() {
         />
         <DownloadCsvButton
           data={data}
-          fileName='session-server-data.csv'
+          fileName='patient-sessions-server-data.csv'
           classes='border-gray-300 border rounded-full px-2 py-2 hover:border-gray-400'
         />
         <DateDropdown handleDateSelection={handleDateSelection} />
       </div>
-      {isLoading ? (
-        <ArrowPathIcon className='animate-spin h-5 w-5' />
+
+      {isLoading || data.length === 0 ? (
+        <div className='flex justify-center flex-col items-center'>
+          <ArrowPathIcon className='animate-spin h-5 w-5' />
+          <div className='text-xs mt-4'>Loading table data...</div>
+        </div>
       ) : (
-        <SessionList data={data} />
+        Object.entries(data).map(([sessionId, sessionData]: any) => {
+          if (!sessionData.data) return null;
+
+          console.log('sessionData: ', sessionData);
+
+          return (
+            <div key={sessionId} className='relative mb-[80px]'>
+              <div>
+                <div className='flex justify-between items-center mb-3'>
+                  <h3 className='text-xs'>
+                    <span className='font-bold'>Session ID - </span>
+                    <span className='inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700 ring-1 ring-inset ring-blue-700/10'>
+                      {sessionData.sessionId}
+                    </span>
+                  </h3>
+                </div>
+                <div className='flex'>
+                  <h3 className='text-sm'>
+                    <span className='font-bold'>User ID - </span>
+                    <span className='mb-2 text-black'>
+                      {sessionData.data[0]?.userId || 'No User ID'}
+                    </span>
+                  </h3>
+                </div>
+              </div>
+              <SessionTable sessionData={sessionData} />
+            </div>
+          );
+        })
       )}
     </div>
   );

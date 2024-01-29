@@ -1,12 +1,13 @@
 'use client';
 import React from 'react';
-
 import {
-  flexRender,
   getCoreRowModel,
   getPaginationRowModel,
   useReactTable,
 } from '@tanstack/react-table';
+import TableControls from '../table/TableControls';
+import { TableHead } from '../table/TableHead';
+import { TableBody } from '../table/TableBody';
 
 export const VideoTable = ({ videoData }: { videoData: any }) => {
   const columns: any[] = [
@@ -32,7 +33,7 @@ export const VideoTable = ({ videoData }: { videoData: any }) => {
     },
     {
       accessorKey: 'timePlayed',
-      header: () => 'Time Played',
+      header: () => 'Time Played*',
       cell: (info: any) => info.getValue(),
     },
     {
@@ -60,69 +61,17 @@ export const VideoTable = ({ videoData }: { videoData: any }) => {
 
   return (
     <>
-      <table style={{ marginBottom: 10 }} className='analytics-table'>
-        <thead>
-          {table.getHeaderGroups().map((headerGroup) => (
-            <tr key={headerGroup.id}>
-              {headerGroup.headers.map((header) => (
-                <th key={header.id}>
-                  {flexRender(
-                    header.column.columnDef.header,
-                    header.getContext()
-                  )}
-                </th>
-              ))}
-            </tr>
-          ))}
-        </thead>
-        <tbody>
-          {table.getRowModel().rows.map((row) => (
-            <tr key={row.id}>
-              {row.getVisibleCells().map((cell) => (
-                <td key={cell.id}>
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </td>
-              ))}
-            </tr>
-          ))}
-        </tbody>
-      </table>
-
-      {/* Pagination controls */}
-      <div className='table-controls' style={{ marginBottom: 40 }}>
-        <button
-          onClick={() => table.previousPage()}
-          disabled={!table.getCanPreviousPage()}
-        >
-          {'<'}
-        </button>
-        <button
-          onClick={() => table.nextPage()}
-          disabled={!table.getCanNextPage()}
-        >
-          {'>'}
-        </button>
-        <span>
-          Page{' '}
-          <strong>
-            {table.getState().pagination.pageIndex + 1} of{' '}
-            {table.getPageCount()}
-          </strong>
-        </span>
-
-        {table.getPageCount() > 1 && (
-          <select
-            value={table.getState().pagination.pageSize}
-            onChange={(e) => table.setPageSize(Number(e.target.value))}
-          >
-            {[10, 20, 30, 40, 50].map((pageSize) => (
-              <option key={pageSize} value={pageSize}>
-                Show {pageSize}
-              </option>
-            ))}
-          </select>
-        )}
+      <div className='mt-[20px] flow-root'>
+        <div className='overflow-x-auto'>
+          <div className='inline-block min-w-full py-2 align-middle'>
+            <table className='min-w-full divide-y divide-gray-300'>
+              <TableHead table={table} />
+              <TableBody table={table} />
+            </table>
+          </div>
+        </div>
       </div>
+      <TableControls table={table} />
     </>
   );
 };

@@ -1,7 +1,8 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { consumerTitle } from '@helpers/utils/Globals';
 import { processVideosServer } from '@utils/videos/processVideosServer';
+import { TimePlayedNotice } from '@helpers/utils/TimePlayedNotice';
 import { VideoTable } from '@components/videos/VideoTable';
 import { ArrowPathIcon } from '@heroicons/react/24/outline';
 import { DownloadCsvButton } from '@components/utils/DownloadCsvButton';
@@ -14,9 +15,15 @@ export default function VideosServerPage() {
   const siteName = consumerTitle;
   const [selectedDate, setSelectedDate] = useState(calculateStartDate(2));
   const { isLoading, error, data } = useServerData(
+    '/api/server/videos',
     selectedDate,
     (fetchedData) => processVideosServer(fetchedData, siteName)
   );
+
+  useEffect(() => {
+    const documentTitle = `KKI ${consumerTitle} | Videos - Server`;
+    document.title = documentTitle;
+  }, []);
 
   const handleDateSelection = (days: any) => {
     setSelectedDate(calculateStartDate(days));
@@ -24,7 +31,7 @@ export default function VideosServerPage() {
 
   if (error) return 'An error has occurred: ' + error.message;
 
-  const tableData = Object.values(data);
+  const tableData = data ? Object.values(data) : [];
 
   return (
     <div className='px-4 sm:px-6 lg:px-8'>
@@ -35,19 +42,23 @@ export default function VideosServerPage() {
           type='Server'
           description='All video data for all KKI Patient users.'
         />
-        <div className='mt-4 sm:ml-16 sm:mt-0 sm:flex-none'>
-          <DownloadCsvButton
-            data={tableData}
-            fileName='video-server-data.csv'
-            classes='border rounded-full px-2 py-2 hover:border-gray-300'
-          />
-        </div>
+        <DownloadCsvButton
+          data={tableData}
+          fileName='patient-client-video-data.csv'
+          classes='border rounded-full px-2 py-2 hover:border-gray-300'
+        />
         <DateDropdown handleDateSelection={handleDateSelection} />
       </div>
-      {isLoading ? (
-        <ArrowPathIcon className='animate-spin h-5 w-5' />
+      {isLoading || tableData.length === 0 ? (
+        <div className='flex justify-center flex-col items-center'>
+          <ArrowPathIcon className='animate-spin h-5 w-5' />
+          <div className='text-xs mt-4'>Loading table data...</div>
+        </div>
       ) : (
-        <VideoTable videoData={tableData} />
+        <>
+          <VideoTable videoData={tableData} />
+          <TimePlayedNotice />
+        </>
       )}
     </div>
   );

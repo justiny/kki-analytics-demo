@@ -8,6 +8,7 @@ import {
   VideoCameraIcon,
   Square3Stack3DIcon,
   ArrowRightIcon,
+  SparklesIcon,
 } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import { useUser } from '@auth0/nextjs-auth0/client';
@@ -24,15 +25,15 @@ const navigation = [
     current: false,
     children: [
       {
-        icon: <ClockIcon className='h-5 w-5 mr-2' />,
-        name: 'Sessions',
-        href: '/kki-patient/client/sessions',
+        icon: <SparklesIcon className='h-5 w-5 mr-2' />,
+        name: 'Engagement',
+        href: '/kki-patient/client/engagement',
         label: 'Client',
       },
       {
-        icon: <CursorArrowRaysIcon className='h-5 w-5 mr-2' />,
-        name: 'Clicks',
-        href: '/kki-patient/client/clicks',
+        icon: <ClockIcon className='h-5 w-5 mr-2' />,
+        name: 'Sessions',
+        href: '/kki-patient/client/sessions',
         label: 'Client',
       },
       {
@@ -45,15 +46,15 @@ const navigation = [
         divider: true,
       },
       {
-        icon: <ClockIcon className='h-5 w-5 mr-2' />,
-        name: 'Sessions',
-        href: '/kki-patient/server/sessions',
+        icon: <SparklesIcon className='h-5 w-5 mr-2' />,
+        name: 'Engagement',
+        href: '/kki-patient/server/engagement',
         label: 'Server',
       },
       {
-        icon: <CursorArrowRaysIcon className='h-5 w-5 mr-2' />,
-        name: 'Clicks',
-        href: '/kki-patient/server/clicks',
+        icon: <ClockIcon className='h-5 w-5 mr-2' />,
+        name: 'Sessions',
+        href: '/kki-patient/server/sessions',
         label: 'Server',
       },
       {
@@ -69,15 +70,15 @@ const navigation = [
     current: false,
     children: [
       {
-        icon: <ClockIcon className='h-5 w-5 mr-2' />,
-        name: 'Sessions',
-        href: '/kki-military/client/sessions',
+        icon: <SparklesIcon className='h-5 w-5 mr-2' />,
+        name: 'Engagement',
+        href: '/kki-military/client/engagement',
         label: 'Client',
       },
       {
-        icon: <CursorArrowRaysIcon className='h-5 w-5 mr-2' />,
-        name: 'Clicks',
-        href: '/kki-military/client/clicks',
+        icon: <ClockIcon className='h-5 w-5 mr-2' />,
+        name: 'Sessions',
+        href: '/kki-military/client/sessions',
         label: 'Client',
       },
       {
@@ -90,15 +91,15 @@ const navigation = [
         divider: true,
       },
       {
-        icon: <ClockIcon className='h-5 w-5 mr-2' />,
-        name: 'Sessions',
-        href: '/kki-military/server/sessions',
+        icon: <SparklesIcon className='h-5 w-5 mr-2' />,
+        name: 'Engagement',
+        href: '/kki-military/server/engagement',
         label: 'Server',
       },
       {
-        icon: <CursorArrowRaysIcon className='h-5 w-5 mr-2' />,
-        name: 'Clicks',
-        href: '/kki-military/server/clicks',
+        icon: <ClockIcon className='h-5 w-5 mr-2' />,
+        name: 'Sessions',
+        href: '/kki-military/server/sessions',
         label: 'Server',
       },
       {
@@ -114,15 +115,15 @@ const navigation = [
     current: false,
     children: [
       {
-        icon: <ClockIcon className='h-5 w-5 mr-2' />,
-        name: 'Sessions',
-        href: '/kki-consumer/client/sessions',
+        icon: <SparklesIcon className='h-5 w-5 mr-2' />,
+        name: 'Engagement',
+        href: '/kki-consumer/client/engagement',
         label: 'Client',
       },
       {
-        icon: <CursorArrowRaysIcon className='h-5 w-5 mr-2' />,
-        name: 'Clicks',
-        href: '/kki-consumer/client/clicks',
+        icon: <ClockIcon className='h-5 w-5 mr-2' />,
+        name: 'Sessions',
+        href: '/kki-consumer/client/sessions',
         label: 'Client',
       },
       {
@@ -135,15 +136,15 @@ const navigation = [
         divider: true,
       },
       {
-        icon: <ClockIcon className='h-5 w-5 mr-2' />,
-        name: 'Sessions',
-        href: '/kki-consumer/server/sessions',
+        icon: <SparklesIcon className='h-5 w-5 mr-2' />,
+        name: 'Engagement',
+        href: '/kki-consumer/server/engagement',
         label: 'Server',
       },
       {
-        icon: <CursorArrowRaysIcon className='h-5 w-5 mr-2' />,
-        name: 'Clicks',
-        href: '/kki-consumer/server/clicks',
+        icon: <ClockIcon className='h-5 w-5 mr-2' />,
+        name: 'Sessions',
+        href: '/kki-consumer/server/sessions',
         label: 'Server',
       },
       {
