@@ -18,6 +18,10 @@ export async function GET(request: Request) {
   console.log('✅ startDate', startDate);
   console.log('✅ endDate', endDate);
 
+  // 22 === 3:00 PM
+  const startDate2 = '20240201T23';
+  const endDate2 = '20240202T00';
+
   try {
     const response = await fetch(
       `${API_ENDPOINT}?start=${startDate}&end=${endDate}`,
@@ -119,16 +123,14 @@ export async function GET(request: Request) {
 
             case 'Page Exit - Server':
               eventData.pageViewId = pageViewId;
-              eventData.totalDuration = totalDuration;
-              eventData.pageEngagement = pageEngagement;
+              eventData.totalDuration = totalDuration / 1000;
+              eventData.pageEngagement = pageEngagement / 1000;
               break;
 
             case 'Click Event - Server':
               eventData.pageViewId = pageViewId;
               eventData.pageName = pageName;
               eventData.pathName = pathName;
-              eventData.totalDuration = totalDuration;
-              eventData.pageEngagement = pageEngagement;
               eventData.pageDestination = pageDestination;
               eventData.pageDestinationName = pageDestinationName;
               eventData.clickType = clickType;

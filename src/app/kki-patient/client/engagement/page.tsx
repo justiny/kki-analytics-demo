@@ -17,7 +17,7 @@ export default function EngagementPage() {
 
   const { isLoading, error, data } = useClientData(
     // '/api/mock/client/engagement',
-    '/api/client/engagement',
+    '/api/client/all',
     selectedDate,
     (fetchedData) => processEngagement(fetchedData, siteName)
   );
@@ -34,6 +34,8 @@ export default function EngagementPage() {
   if (error) return 'An error has occurred: ' + error.message;
 
   const tableData = data ? Object.values(data) : [];
+
+  console.log('tableData', tableData);
 
   return (
     <div className='px-4 sm:px-6 lg:px-10'>

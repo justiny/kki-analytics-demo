@@ -16,8 +16,8 @@ export default function EngagementPage() {
   const [selectedDate, setSelectedDate] = useState(calculateStartDate(1));
 
   const { isLoading, error, data } = useClientData(
-    '/api/mock/server/engagement',
-    // '/api/server/engagement',
+    // '/api/mock/server/engagement',
+    '/api/server/engagement',
     selectedDate,
     (fetchedData) => processEngagementServer(fetchedData, siteName)
   );

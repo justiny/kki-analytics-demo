@@ -33,6 +33,8 @@ export default function VideosClientPage() {
 
   const tableData = data ? Object.values(data) : [];
 
+  console.log('tableData', tableData);
+
   return (
     <div className='px-4 sm:px-6 lg:px-8'>
       <div className='sm:flex sm:items-center mb-20'>

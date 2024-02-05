@@ -14,7 +14,7 @@ export const timeZoneUtil = (
 
   const options = {
     timeZone: timeZoneProp,
-    hour12: false,
+    hour12: true,
     year: '2-digit',
     month: 'numeric',
     day: 'numeric',

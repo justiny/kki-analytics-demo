@@ -17,7 +17,7 @@ export default function SessionsClientPage() {
   const [sessionsPerPage, setSessionsPerPage] = useState(5); // default 5 sessions per page
   const { isLoading, error, data } = useClientData(
     // '/api/mock/client/engagement',
-    '/api/client/engagement',
+    '/api/client/all',
     selectedDate,
     (fetchedData) => processSessions(fetchedData, siteName)
   );
@@ -70,29 +70,35 @@ export default function SessionsClientPage() {
         </div>
       ) : (
         <>
-          {currentSessions.map(([sessionId, sessionData]: any) => (
-            <div key={sessionId} className='relative mb-[80px]'>
-              <div>
-                <div className='flex justify-between items-center mb-3'>
-                  <h3 className='text-xs'>
-                    <span className='font-bold'>Session ID - </span>
-                    <span className='inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700 ring-1 ring-inset ring-blue-700/10'>
-                      {sessionData.sessionId}
-                    </span>
-                  </h3>
+          {currentSessions.map(([sessionId, sessionData]: any) => {
+            console.log('sessionData: ', sessionData);
+
+            return (
+              <div key={sessionId} className='relative mb-[80px]'>
+                <div>
+                  <div className='flex justify-between items-center mb-3'>
+                    <h3 className='text-xs'>
+                      <span className='font-bold'>User ID - </span>
+                      <span className='inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700 ring-1 ring-inset ring-blue-700/10'>
+                        {(sessionData.data[1] && sessionData.data[1].userId) ||
+                          sessionData.data[0].userId ||
+                          'No User ID'}
+                      </span>
+                    </h3>
+                  </div>
+                  <div className='flex'>
+                    <h3 className='text-sm'>
+                      <span className='font-bold'>Session ID - </span>
+                      <span className='mb-2 text-gray-600'>
+                        {sessionData.sessionId}
+                      </span>
+                    </h3>
+                  </div>
                 </div>
-                <div className='flex'>
-                  <h3 className='text-sm'>
-                    <span className='font-bold'>User ID - </span>
-                    <span className='mb-2 text-black'>
-                      {sessionData.data[0]?.userId || 'No User ID'}
-                    </span>
-                  </h3>
-                </div>
+                <SessionTable sessionData={sessionData} />
               </div>
-              <SessionTable sessionData={sessionData} />
-            </div>
-          ))}
+            );
+          })}
           <Pagination
             sessionsPerPage={sessionsPerPage}
             totalSessions={Object.entries(data).length}

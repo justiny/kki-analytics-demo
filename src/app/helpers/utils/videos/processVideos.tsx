@@ -1,47 +1,47 @@
 export const processVideos = (fetchedData: any[], siteName: string) => {
-  const groupedVideos = fetchedData.reduce((acc, item) => {
-    if (item.siteName !== siteName) return acc;
-    (acc[item.videoStartTime] = acc[item.videoStartTime] || []).push(item);
+  console.log('fetchedData', fetchedData);
+
+  // Group by videoStartTime
+  const groupedByStartTime = fetchedData.reduce((acc, currentValue) => {
+    (acc[currentValue.videoStartTime] =
+      acc[currentValue.videoStartTime] || []).push(currentValue);
     return acc;
   }, {});
 
-  return Object.entries(groupedVideos)
-    .map(([startTime, group]: any) => {
-      const lastEvent = group[group.length - 1];
+  // Get the last VideoWatched event from each group
+  const lastEvents = Object.values(groupedByStartTime).map((events: any) => {
+    return events.sort(
+      (
+        a: { processedTime: string | number | Date },
+        b: { processedTime: string | number | Date }
+      ) =>
+        new Date(b.processedTime).getTime() -
+        new Date(a.processedTime).getTime()
+    )[0];
+  });
 
-      const isComplete = group.some((event: any) => event.videoComplete);
+  // Optional: Filter videos by siteName if needed
+  const filteredLastEvents = siteName
+    ? lastEvents.filter((item) => item.siteName === siteName)
+    : lastEvents;
 
-      let eventData = isComplete
-        ? lastEvent
-        : group.find((event: any) => event.eventType === 'Video Watched');
-
-      // Fallback in case eventData is undefined
-      if (!eventData) {
-        console.warn(
-          'No valid eventData found for group starting at:',
-          startTime
-        );
-        return null;
-      }
-
-      const formatPercentage = (percentageString: any) => {
-        const percentageNum = Number(percentageString);
-        return isNaN(percentageNum)
-          ? 'Unknown'
-          : `${percentageNum.toFixed(2)}%`;
-      };
-
-      return {
-        videoTitle: eventData.videoTitle || 'Unknown Title',
-        pageName: eventData.videoPageName || 'Unknown Page',
-        userId: eventData.userId || 'Unknown User',
-        dateTime: eventData.videoStartTime
-          ? new Date(eventData.videoStartTime).toLocaleString()
-          : 'Unknown Date',
-        timePlayed: eventData.videoPlayTime || 'Unknown Time',
-        videoDuration: eventData.videoDuration || 'Unknown Duration',
-        percentagePlayed: formatPercentage(eventData.videoPercentage),
-      };
-    })
-    .filter((item) => item !== null);
+  // Transform each selected event into the desired format
+  return filteredLastEvents.map((eventData) => ({
+    videoTitle: eventData.videoTitle || 'Unknown Title',
+    pageName: eventData.videoPageName || 'Unknown Page',
+    userId: eventData.userId || 'Unknown User',
+    dateTime: eventData.videoStartTime
+      ? new Date(eventData.videoStartTime).toLocaleString('en-US', {
+          year: 'numeric',
+          month: 'numeric',
+          day: 'numeric',
+          hour: 'numeric',
+          minute: 'numeric',
+          second: 'numeric',
+        })
+      : 'Unknown Date',
+    timePlayed: eventData.videoPlayTime || 'Unknown Time',
+    videoDuration: eventData.videoDuration || 'Unknown Duration',
+    percentagePlayed: `${eventData.videoPercentage}%` || 'Unknown Percentage',
+  }));
 };

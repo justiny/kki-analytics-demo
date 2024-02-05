@@ -15,6 +15,24 @@ export async function GET(request: Request) {
   const SECRET_KEY = '4a3d4d72b960339acbc6510949755d4e';
   const { startDate, endDate } = getDefaultDates(request.url);
 
+  // 23 === 4:00 PM
+  // 22 === 3:00 PM
+  // 21 === 2:00 PM
+  // 20 === 1:00 PM
+  // 19 === 12:00 PM
+  // 18 === 11:00 AM
+  // 17 === 10:00 AM
+  // 16 === 9:00 AM
+  // 15 === 8:00 AM
+  // 14 === 7:00 AM
+  // 13 === 6:00 AM
+  // 12 === 5:00 AM
+  // 11 === 4:00 AM
+  // 10 === 3:00 AM
+  // 09 === 2:00 AM
+  const startDate2 = '20240203T10';
+  const endDate2 = '20240205T00';
+
   console.log('✅ startDate', startDate);
   console.log('✅ endDate', endDate);
 
@@ -56,19 +74,15 @@ export async function GET(request: Request) {
             event.event_type !== 'Page Entry - Client' &&
             event.event_type !== 'Page Exit - Client' &&
             event.event_type !== 'Page InActivity - Client' &&
-            event.event_type !== 'Click Event - Client' &&
-            event.event_type !== 'Video Watched'
+            event.event_type !== 'Click Event - Client'
           ) {
             return;
           }
-
-          // console.log('event: ', event);
 
           // Native Event properties
           const userId = event.user_id;
           const eventTime = event.event_time;
           const eventType = event.event_type;
-          const sessionId = event.event_properties.sessionId;
           const sessionIdClient = event.session_id;
           const processedTime = event.processed_time;
           const cityLocation = event.city;
@@ -76,6 +90,7 @@ export async function GET(request: Request) {
 
           // User Property Site Name
           const siteName = event.user_properties.site_name;
+          const anonId = event.user_properties.anon_id;
 
           // Page View events
           const totalDuration = event.event_properties.totalDuration;
@@ -90,13 +105,25 @@ export async function GET(request: Request) {
             event.event_properties.pageDestinationName;
           const sectionTitle = event.event_properties.sectionTitle;
           const linkText = event.event_properties.linkText;
+
+          // Video Events
+          const videoId = event.event_properties.id;
           const videoTitle = event.event_properties.videoTitle;
+          const videoTime = event.event_properties.time;
+          const videoDuration = event.event_properties.videoDuration;
+          const videoPlayTime = event.event_properties.videoPlayTime;
+          const videoUrl = event.event_properties.url;
+          const videoPageName = event.event_properties.videoPageName;
+          const videoComplete = event.event_properties.videoComplete;
+          const videoPercentage = event.event_properties.videoPercentage;
+          const videoStartTime = event.event_properties.videoStartTime;
 
           // Convert time to local time
           const timeZone = timeZoneUtil(eventTime, 'America/Denver');
 
           let eventData: EventData = {
             userId,
+            anonId,
             eventTime: timeZone,
             eventType,
             sessionIdClient,
@@ -121,16 +148,14 @@ export async function GET(request: Request) {
 
             case 'Page Exit - Client':
               eventData.pageViewId = pageViewId;
-              eventData.totalDuration = totalDuration;
-              eventData.pageEngagement = pageEngagement;
+              eventData.totalDuration = totalDuration / 1000;
+              eventData.pageEngagement = pageEngagement / 1000;
               break;
 
             case 'Click Event - Client':
               eventData.pageViewId = pageViewId;
               eventData.pageName = pageName;
               eventData.pathName = pathName;
-              eventData.totalDuration = totalDuration;
-              eventData.pageEngagement = pageEngagement;
               eventData.pageDestination = pageDestination;
               eventData.pageDestinationName = pageDestinationName;
               eventData.clickType = clickType;
@@ -139,18 +164,18 @@ export async function GET(request: Request) {
               eventData.videoTitle = videoTitle;
               break;
 
-            // case 'Video Watched':
-            //   eventData.videoTitle = videoTitle;
-            //   eventData.videoId = videoId;
-            //   eventData.videoTime = videoTime;
-            //   eventData.videoUrl = videoUrl;
-            //   eventData.videoPageName = videoPageName;
-            //   eventData.videoPlayTime = videoPlayTime;
-            //   eventData.videoDuration = videoDuration;
-            //   eventData.videoComplete = videoComplete;
-            //   eventData.videoPercentage = videoPercentage;
-            //   eventData.videoStartTime = videoStartTime;
-            //   break;
+            case 'Video Watched':
+              eventData.videoTitle = videoTitle;
+              eventData.videoId = videoId;
+              eventData.videoTime = videoTime;
+              eventData.videoUrl = videoUrl;
+              eventData.videoPageName = videoPageName;
+              eventData.videoPlayTime = videoPlayTime;
+              eventData.videoDuration = videoDuration;
+              eventData.videoComplete = videoComplete;
+              eventData.videoPercentage = videoPercentage;
+              eventData.videoStartTime = videoStartTime;
+              break;
           }
           allEvents.push(eventData);
         });

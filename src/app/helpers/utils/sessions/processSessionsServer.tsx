@@ -47,7 +47,7 @@ export const processSessionsServer = (fetchedData: any, siteName: string) => {
     // Process different event types
     switch (eventType) {
       case 'Page Entry - Server':
-        if (!event.pageName) return;
+        // if (!event.pageName) return;
         pageData.pageName = event.pageName;
         pageData.userId = event.userId;
         pageData.eventTime = event.eventTime;

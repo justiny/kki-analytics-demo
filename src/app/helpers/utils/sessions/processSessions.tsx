@@ -47,11 +47,10 @@ export const processSessions = (fetchedData: any, siteName: string) => {
     // Process different event types
     switch (eventType) {
       case 'Page Entry - Client':
-        if (!event.pageName) return;
-        pageData.pageName = event.pageName;
-        pageData.userId = event.userId;
-        pageData.eventTime = event.eventTime;
-        pageData.pageReferrer = event.pageReferrer;
+        pageData.pageName = event.pageName || 'Unknown Page Name';
+        pageData.userId = event.userId || 'Unknown User';
+        pageData.eventTime = event.eventTime || 'Unknown Time';
+        pageData.pageReferrer = event.pageReferrer || 'Unknown Referrer';
         break;
       case 'Page Exit - Client':
         pageData.totalDuration += event.totalDuration;

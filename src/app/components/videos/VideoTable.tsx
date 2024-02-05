@@ -34,12 +34,12 @@ export const VideoTable = ({ videoData }: { videoData: any }) => {
     {
       accessorKey: 'timePlayed',
       header: () => 'Time Played*',
-      cell: (info: any) => info.getValue(),
+      cell: (info: any) => info.getValue()?.toFixed(3),
     },
     {
       accessorKey: 'videoDuration',
       header: () => 'Video Duration',
-      cell: (info: any) => info.getValue(),
+      cell: (info: any) => info.getValue()?.toFixed(3),
     },
     {
       accessorKey: 'percentagePlayed',
@@ -61,9 +61,9 @@ export const VideoTable = ({ videoData }: { videoData: any }) => {
 
   return (
     <>
-      <div className='mt-[20px] flow-root'>
+      <div className='flow-root'>
         <div className='overflow-x-auto'>
-          <div className='inline-block min-w-full py-2 align-middle'>
+          <div className='inline-block min-w-full py-2 align-middle pt-[50px]'>
             <table className='min-w-full divide-y divide-gray-300'>
               <TableHead table={table} />
               <TableBody table={table} />

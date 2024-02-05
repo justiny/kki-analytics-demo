@@ -37,14 +37,12 @@ export const processEngagement = (fetchedData: any, siteName: string) => {
 
     const data = processedDataMap.get(pageViewId);
 
-    // Process different event types
     switch (eventType) {
       case 'Page Entry - Client':
-        if (!pageName) return; // Got to have a pageName
-        data.pageName = event.pageName;
-        data.userId = event.userId;
-        data.eventTime = event.eventTime;
-        data.pageReferrer = event.pageReferrer;
+        data.pageName = event.pageName || 'Unknown Page Name';
+        data.userId = event.userId || 'Unknown User';
+        data.eventTime = event.eventTime || 'Unknown Time';
+        data.pageReferrer = event.pageReferrer || 'Unknown Referrer';
         break;
       case 'Page Exit - Client':
         data.totalDuration += event.totalDuration; // Aggregate duration
@@ -56,7 +54,7 @@ export const processEngagement = (fetchedData: any, siteName: string) => {
         else if (clickType === 'Quick Link Click') data.navigationClicks += 1;
         else if (clickType === 'Accordion Click') data.accordionClicks += 1;
         else if (clickType === 'Video Click') data.videoClicks += 1;
-        else data.otherClicks += 1; // Assuming all other clicks fall into 'other' category
+        else data.otherClicks += 1;
         break;
     }
 

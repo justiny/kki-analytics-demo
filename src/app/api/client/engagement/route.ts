@@ -15,8 +15,9 @@ export async function GET(request: Request) {
   const SECRET_KEY = '4a3d4d72b960339acbc6510949755d4e';
   const { startDate, endDate } = getDefaultDates(request.url);
 
-  // const startDate2 = '20240126T00';
-  // const endDate2 = '20240129T00';
+  // 22 === 3:00 PM
+  const startDate2 = '20240201T23';
+  const endDate2 = '20240203T00';
 
   console.log('✅ startDate', startDate);
   console.log('✅ endDate', endDate);
@@ -64,7 +65,11 @@ export async function GET(request: Request) {
             return;
           }
 
-          // console.log('event: ', event);
+          // if (event.user_id !== 'tyyybadd') {
+          //   return;
+          // }
+
+          console.log('🟢 🟢 🟢 event: ', event);
 
           // Native Event properties
           const userId = event.user_id;
@@ -78,6 +83,7 @@ export async function GET(request: Request) {
 
           // User Property Site Name
           const siteName = event.user_properties.site_name;
+          const anonId = event.user_properties.anon_id;
 
           // Page View events
           const totalDuration = event.event_properties.totalDuration;
@@ -99,6 +105,7 @@ export async function GET(request: Request) {
 
           let eventData: EventData = {
             userId,
+            anonId,
             eventTime: timeZone,
             eventType,
             sessionIdClient,
@@ -123,16 +130,16 @@ export async function GET(request: Request) {
 
             case 'Page Exit - Client':
               eventData.pageViewId = pageViewId;
-              eventData.totalDuration = totalDuration;
-              eventData.pageEngagement = pageEngagement;
+              eventData.totalDuration = totalDuration / 1000;
+              eventData.pageEngagement = pageEngagement / 1000;
               break;
 
             case 'Click Event - Client':
               eventData.pageViewId = pageViewId;
               eventData.pageName = pageName;
               eventData.pathName = pathName;
-              eventData.totalDuration = totalDuration;
-              eventData.pageEngagement = pageEngagement;
+              // eventData.totalDuration = totalDuration / 1000;
+              // eventData.pageEngagement = pageEngagement / 1000;
               eventData.pageDestination = pageDestination;
               eventData.pageDestinationName = pageDestinationName;
               eventData.clickType = clickType;

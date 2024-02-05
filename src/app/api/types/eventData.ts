@@ -1,5 +1,6 @@
 export interface EventData {
   userId: string | null;
+  anonId?: string;
   eventTime?: string;
   eventType: string;
   videoTitle?: string;
@@ -34,8 +35,8 @@ export interface EventData {
   pathName?: string;
   sessionIdClient?: string;
   processedTime?: string;
-  totalDuration?: string;
-  pageEngagement?: string;
+  totalDuration?: number;
+  pageEngagement?: number;
   cityLocation?: string;
   regionLocation?: string;
   pageReferrer?: string;

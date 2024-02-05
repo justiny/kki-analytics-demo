@@ -35,11 +35,10 @@ export const processEngagementServer = (fetchedData: any, siteName: string) => {
     // Process different event types
     switch (eventType) {
       case 'Page Entry - Server':
-        if (!event.pageName) return; // Got to have a pageName
-        data.pageName = event.pageName;
-        data.userId = event.userId;
-        data.eventTime = event.eventTime;
-        data.pageReferrer = event.pageReferrer;
+        data.pageName = event.pageName || 'Unknown Page Name';
+        data.userId = event.userId || 'Unknown User';
+        data.eventTime = event.eventTime || 'Unknown Time';
+        data.pageReferrer = event.pageReferrer || 'Unknown Referrer';
         break;
       case 'Page Exit - Server':
         data.totalDuration += event.totalDuration; // Aggregate duration
@@ -51,7 +50,7 @@ export const processEngagementServer = (fetchedData: any, siteName: string) => {
         else if (clickType === 'Quick Link Click') data.navigationClicks += 1;
         else if (clickType === 'Accordion Click') data.accordionClicks += 1;
         else if (clickType === 'Video Click') data.videoClicks += 1;
-        else data.otherClicks += 1; // Assuming all other clicks fall into 'other' category
+        else data.otherClicks += 1;
         break;
     }
 

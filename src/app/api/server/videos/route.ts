@@ -18,6 +18,10 @@ export async function GET(request: Request) {
   console.log('✅ startDate', startDate);
   console.log('✅ endDate', endDate);
 
+  // 22 === 3:00 PM
+  const startDate2 = '20240201T23';
+  const endDate2 = '20240202T00';
+
   try {
     const response = await fetch(
       `${API_ENDPOINT}?start=${startDate}&end=${endDate}`,
