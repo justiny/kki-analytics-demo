@@ -15,7 +15,7 @@ export default function VideosClientPage() {
   const siteName = militaryTitle;
   const [selectedDate, setSelectedDate] = useState(calculateStartDate(2));
   const { isLoading, error, data } = useClientData(
-    '/api/client/videos',
+    '/api/videos/client',
     selectedDate,
     (fetchedData) => processVideos(fetchedData, siteName)
   );

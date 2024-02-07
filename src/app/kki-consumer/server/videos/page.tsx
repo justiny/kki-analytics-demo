@@ -15,7 +15,7 @@ export default function VideosServerPage() {
   const siteName = consumerTitle;
   const [selectedDate, setSelectedDate] = useState(calculateStartDate(2));
   const { isLoading, error, data } = useServerData(
-    '/api/server/videos',
+    '/api/videos/server',
     selectedDate,
     (fetchedData) => processVideosServer(fetchedData, siteName)
   );

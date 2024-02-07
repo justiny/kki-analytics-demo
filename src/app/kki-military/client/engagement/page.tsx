@@ -1,7 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { militaryTitle } from '@helpers/utils/Globals';
-import { processEngagement } from '@utils/engagement/processEngagement';
+import { processEvents } from '@utils/engagement/processEvents';
 import { EngagementTable } from '@components/engagement/EngagementTable';
 import { UserEngagementNotice } from '@helpers/utils/UserEngagementNotice';
 import { ArrowPathIcon } from '@heroicons/react/24/outline';
@@ -16,10 +16,9 @@ export default function EngagementPage() {
   const [selectedDate, setSelectedDate] = useState(calculateStartDate(1));
 
   const { isLoading, error, data } = useClientData(
-    // '/api/mock/client/engagement',
-    '/api/client/engagement',
+    '/api/client',
     selectedDate,
-    (fetchedData) => processEngagement(fetchedData, siteName)
+    (fetchedData) => processEvents(fetchedData, 'Client', siteName)
   );
 
   useEffect(() => {

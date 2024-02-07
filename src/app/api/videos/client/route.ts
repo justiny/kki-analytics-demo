@@ -60,8 +60,6 @@ export async function GET(request: Request) {
             return;
           }
 
-          // console.log('event: ', event);
-
           // Native Event properties
           const userId = event.user_id;
           const eventTime = event.event_time;
