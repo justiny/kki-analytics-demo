@@ -1,7 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { patientTitle } from '@helpers/utils/Globals';
-import { processEngagement } from '@utils/engagement/processEngagement';
+import { processEvents } from '@utils/engagement/processEvents';
 import { UserEngagementNotice } from '@helpers/utils/UserEngagementNotice';
 import { EngagementTable } from '@components/engagement/EngagementTable';
 import { ArrowPathIcon } from '@heroicons/react/24/outline';
@@ -16,10 +16,9 @@ export default function EngagementPage() {
   const [selectedDate, setSelectedDate] = useState(calculateStartDate(1));
 
   const { isLoading, error, data } = useClientData(
-    // '/api/mock/client/engagement',
-    '/api/client/all',
+    '/api/client',
     selectedDate,
-    (fetchedData) => processEngagement(fetchedData, siteName)
+    (fetchedData) => processEvents(fetchedData, 'Client', siteName)
   );
 
   useEffect(() => {
@@ -35,8 +34,6 @@ export default function EngagementPage() {
 
   const tableData = data ? Object.values(data) : [];
 
-  console.log('tableData', tableData);
-
   return (
     <div className='px-4 sm:px-6 lg:px-10'>
       <div className='sm:flex sm:items-center mb-20 justify-between w-full'>
@@ -49,7 +46,7 @@ export default function EngagementPage() {
         <DownloadCsvButton
           data={tableData}
           fileName='patient-engagement-client-data.csv'
-          classes='border-gray-300 border rounded-full px-2 py-2 hover:border-gray-400'
+          classes='border-gray-300 border rounded-full px-2 py-2 hover:border-gray-400 mt-10 sm:mt-0'
         />
         <DateDropdown handleDateSelection={handleDateSelection} />
       </div>

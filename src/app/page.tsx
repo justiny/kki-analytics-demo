@@ -4,34 +4,28 @@ import { ArrowPathIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 
 export default function Home() {
-  <title>KKI Analytics</title>;
   const { user, error, isLoading } = useUser();
 
-  if (isLoading) {
-    return <ArrowPathIcon className='animate-spin h-5 w-5' />;
-  }
+  return (
+    <>
+      {/* Weird issue with loading state  */}
+      {/* {isLoading && <ArrowPathIcon className='animate-spin h-5 w-5' />} */}
+      {error && <div>Error: {error.message}</div>}
 
-  console.log('user', user);
-  console.log('error', error);
-  console.log('isLoading', isLoading);
-
-  if (!user) {
-    return (
-      <>
-        Welcome to KKI Analytics. Please{' '}
-        <Link href='/api/auth/login' className='underline hover:opacity-75'>
-          login
-        </Link>{' '}
-        to access your data.
-      </>
-    );
-  }
-
-  if (user) {
-    return (
-      <div>
-        <p className='text-lg'>Welcome {user?.email}</p>
-      </div>
-    );
-  }
+      {!user && (
+        <div>
+          Welcome to KKI Analytics. Please{' '}
+          <Link href='/api/auth/login'>
+            <span className='underline hover:opacity-75'>login</span>
+          </Link>{' '}
+          to access your data.
+        </div>
+      )}
+      {user && (
+        <div>
+          <p className='text-lg'>Welcome {user.email}</p>
+        </div>
+      )}
+    </>
+  );
 }

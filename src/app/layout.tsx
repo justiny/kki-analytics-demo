@@ -6,7 +6,7 @@ import { useState } from 'react';
 import Sidebar from '@components/Sidebar';
 import SidebarDesktop from '@components/SidebarDesktop';
 import NavigationMobile from '@components/NavigationMobile';
-import Hydrate from '@global/Hydrate';
+import Hydrate from '@global/helpers/utils/Hydrate';
 import Provider from '@components/Provider';
 
 const inter = Inter({ subsets: ['latin'] });
@@ -20,15 +20,17 @@ export default function RootLayout({
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
-    <Hydrate font={inter}>
-      <Provider>
-        <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
-        <SidebarDesktop />
-        <NavigationMobile setSidebarOpen={setSidebarOpen} />
-        <main className='py-10 lg:pl-72'>
-          <div className='px-4 sm:px-6 lg:px-8'>{children}</div>
-        </main>
-      </Provider>
-    </Hydrate>
+    <html lang='en'>
+      <body className='h-full'>
+        <Provider>
+          <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
+          <SidebarDesktop />
+          <NavigationMobile setSidebarOpen={setSidebarOpen} />
+          <main className='py-10 lg:pl-72'>
+            <div className='px-4 sm:px-6 lg:px-8'>{children}</div>
+          </main>
+        </Provider>
+      </body>
+    </html>
   );
 }

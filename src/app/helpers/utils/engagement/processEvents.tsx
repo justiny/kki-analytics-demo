@@ -26,13 +26,28 @@ interface ProcessedEvent {
   otherClicks: number;
 }
 
-export const processEngagement = (
+export const processEvents = (
   fetchedData: Event[],
-  type: string,
+  environment: string,
   siteName: string
 ): ProcessedEvent[] => {
   const filteredData = fetchedData.filter(
     (event) => event.siteName === siteName
+  );
+
+  // First, identify all authenticated userIds within each sessionId
+  const authenticatedUserIdsBySession = filteredData.reduce(
+    (acc: any, event: any) => {
+      if (!isUUID(event.userId)) {
+        // Assuming non-UUID userIds are authenticated userIds
+        const existing = acc[event.sessionId] || [];
+        if (!existing.includes(event.userId)) {
+          acc[event.sessionId] = [...existing, event.userId];
+        }
+      }
+      return acc;
+    },
+    {}
   );
 
   // Group events by pageViewId
@@ -65,20 +80,27 @@ export const processEngagement = (
       };
 
       events.forEach((event: any) => {
-        if (event.eventType === 'Page Entry - Client') {
+        // Determine the most appropriate userId for this event
+        const potentialUserIds = authenticatedUserIdsBySession[event.sessionId];
+        const userId =
+          potentialUserIds && potentialUserIds.length > 0
+            ? potentialUserIds[0]
+            : event.anonId;
+
+        if (event.eventType === `Page Entry - ${environment}`) {
           processedEvent.pageName = event.pageName || '';
-          processedEvent.userId = event.userId;
+          processedEvent.userId = userId;
           processedEvent.eventTime = event.eventTime;
           processedEvent.pageReferrer = event.pageReferrer || '';
           hasPageEntry = true;
         } else if (
-          event.eventType === 'Page Exit - Client' ||
+          event.eventType === `Page Exit - ${environment}` ||
           event.eventType === 'Page Exit - Unload'
         ) {
           processedEvent.totalDuration += event.totalDuration || 0;
           processedEvent.pageEngagement += event.pageEngagement || 0;
           hasPageExit = true;
-        } else if (event.eventType.startsWith('Click Event - Client')) {
+        } else if (event.eventType.startsWith(`Click Event - ${environment}`)) {
           processedEvent.clickTotal += 1;
           switch (event.clickType) {
             case 'Hyperlink Link Click':
@@ -100,7 +122,6 @@ export const processEngagement = (
         }
       });
 
-      // Only include the processed event if both a Page Entry and Page Exit event were found
       if (hasPageEntry && hasPageExit) {
         return [processedEvent];
       } else {
@@ -111,3 +132,9 @@ export const processEngagement = (
 
   return processedData;
 };
+
+function isUUID(userId: string): boolean {
+  const regexExp =
+    /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+  return regexExp.test(userId);
+}

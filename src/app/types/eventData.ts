@@ -15,6 +15,7 @@ export interface EventData {
   videoUrl?: string;
   videoPageName?: string;
   sessionId?: string;
+  sessionIdServer?: string;
   siteName?: string;
   linkName?: string;
   linkDestination?: string;

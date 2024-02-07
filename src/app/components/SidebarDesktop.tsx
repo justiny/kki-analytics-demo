@@ -30,12 +30,12 @@ const navigation = [
         href: '/kki-patient/client/engagement',
         label: 'Client',
       },
-      {
-        icon: <ClockIcon className='h-5 w-5 mr-2' />,
-        name: 'Sessions',
-        href: '/kki-patient/client/sessions',
-        label: 'Client',
-      },
+      // {
+      //   icon: <ClockIcon className='h-5 w-5 mr-2' />,
+      //   name: 'Sessions',
+      //   href: '/kki-patient/client/sessions',
+      //   label: 'Client',
+      // },
       {
         icon: <VideoCameraIcon className='h-5 w-5 mr-2' />,
         name: 'Videos',
@@ -51,12 +51,12 @@ const navigation = [
         href: '/kki-patient/server/engagement',
         label: 'Server',
       },
-      {
-        icon: <ClockIcon className='h-5 w-5 mr-2' />,
-        name: 'Sessions',
-        href: '/kki-patient/server/sessions',
-        label: 'Server',
-      },
+      // {
+      //   icon: <ClockIcon className='h-5 w-5 mr-2' />,
+      //   name: 'Sessions',
+      //   href: '/kki-patient/server/sessions',
+      //   label: 'Server',
+      // },
       {
         icon: <VideoCameraIcon className='h-5 w-5 mr-2' />,
         name: 'Videos',
@@ -75,12 +75,12 @@ const navigation = [
         href: '/kki-military/client/engagement',
         label: 'Client',
       },
-      {
-        icon: <ClockIcon className='h-5 w-5 mr-2' />,
-        name: 'Sessions',
-        href: '/kki-military/client/sessions',
-        label: 'Client',
-      },
+      // {
+      //   icon: <ClockIcon className='h-5 w-5 mr-2' />,
+      //   name: 'Sessions',
+      //   href: '/kki-military/client/sessions',
+      //   label: 'Client',
+      // },
       {
         icon: <VideoCameraIcon className='h-5 w-5 mr-2' />,
         name: 'Videos',
@@ -96,12 +96,12 @@ const navigation = [
         href: '/kki-military/server/engagement',
         label: 'Server',
       },
-      {
-        icon: <ClockIcon className='h-5 w-5 mr-2' />,
-        name: 'Sessions',
-        href: '/kki-military/server/sessions',
-        label: 'Server',
-      },
+      // {
+      //   icon: <ClockIcon className='h-5 w-5 mr-2' />,
+      //   name: 'Sessions',
+      //   href: '/kki-military/server/sessions',
+      //   label: 'Server',
+      // },
       {
         icon: <VideoCameraIcon className='h-5 w-5 mr-2' />,
         name: 'Videos',
@@ -120,12 +120,12 @@ const navigation = [
         href: '/kki-consumer/client/engagement',
         label: 'Client',
       },
-      {
-        icon: <ClockIcon className='h-5 w-5 mr-2' />,
-        name: 'Sessions',
-        href: '/kki-consumer/client/sessions',
-        label: 'Client',
-      },
+      // {
+      //   icon: <ClockIcon className='h-5 w-5 mr-2' />,
+      //   name: 'Sessions',
+      //   href: '/kki-consumer/client/sessions',
+      //   label: 'Client',
+      // },
       {
         icon: <VideoCameraIcon className='h-5 w-5 mr-2' />,
         name: 'Videos',
@@ -141,12 +141,12 @@ const navigation = [
         href: '/kki-consumer/server/engagement',
         label: 'Server',
       },
-      {
-        icon: <ClockIcon className='h-5 w-5 mr-2' />,
-        name: 'Sessions',
-        href: '/kki-consumer/server/sessions',
-        label: 'Server',
-      },
+      // {
+      //   icon: <ClockIcon className='h-5 w-5 mr-2' />,
+      //   name: 'Sessions',
+      //   href: '/kki-consumer/server/sessions',
+      //   label: 'Server',
+      // },
       {
         icon: <VideoCameraIcon className='h-5 w-5 mr-2' />,
         name: 'Videos',

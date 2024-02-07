@@ -5,7 +5,7 @@ import { Buffer } from 'buffer';
 import { promisify } from 'util';
 import { getDefaultDates } from '@utils/DateUtils';
 import { timeZoneUtil } from '@utils/timeZoneUtil';
-import { EventData } from '../../types/eventData';
+import { EventData } from '../../../types/eventData';
 
 const gunzip = promisify(zlib.gunzip);
 
@@ -15,26 +15,12 @@ export async function GET(request: Request) {
   const SECRET_KEY = '4a3d4d72b960339acbc6510949755d4e';
   const { startDate, endDate } = getDefaultDates(request.url);
 
-  // 23 === 4:00 PM
-  // 22 === 3:00 PM
-  // 21 === 2:00 PM
-  // 20 === 1:00 PM
-  // 19 === 12:00 PM
-  // 18 === 11:00 AM
-  // 17 === 10:00 AM
-  // 16 === 9:00 AM
-  // 15 === 8:00 AM
-  // 14 === 7:00 AM
-  // 13 === 6:00 AM
-  // 12 === 5:00 AM
-  // 11 === 4:00 AM
-  // 10 === 3:00 AM
-  // 09 === 2:00 AM
-  const startDate2 = '20240203T10';
-  const endDate2 = '20240205T00';
-
   console.log('✅ startDate', startDate);
   console.log('✅ endDate', endDate);
+
+  // 22 === 3:00 PM
+  const startDate2 = '20240201T23';
+  const endDate2 = '20240202T00';
 
   try {
     const response = await fetch(
@@ -70,45 +56,26 @@ export async function GET(request: Request) {
           .map((line) => JSON.parse(line));
 
         events.forEach((event) => {
-          if (
-            event.event_type !== 'Page Entry - Client' &&
-            event.event_type !== 'Page Exit - Client' &&
-            event.event_type !== 'Page InActivity - Client' &&
-            event.event_type !== 'Click Event - Client'
-          ) {
+          if (event.event_type !== 'Video Watched - Server') {
             return;
           }
+
+          // console.log('event: ', event);
 
           // Native Event properties
           const userId = event.user_id;
           const eventTime = event.event_time;
           const eventType = event.event_type;
-          const sessionIdClient = event.session_id;
+          const sessionId = event.event_properties.sessionId;
           const processedTime = event.processed_time;
           const cityLocation = event.city;
           const regionLocation = event.region;
 
           // User Property Site Name
           const siteName = event.user_properties.site_name;
-          const anonId = event.user_properties.anon_id;
 
-          // Page View events
-          const totalDuration = event.event_properties.totalDuration;
-          const pageEngagement = event.event_properties.pageEngagement;
-          const pageReferrer = event.event_properties.previousPathname;
-          const pageViewId = event.event_properties.pageViewId;
-          const pageName = event.event_properties.pageName;
-          const pathName = event.event_properties.pathName;
-          const pageDestination = event.event_properties.pageDestination;
-          const clickType = event.event_properties.clickType;
-          const pageDestinationName =
-            event.event_properties.pageDestinationName;
-          const sectionTitle = event.event_properties.sectionTitle;
-          const linkText = event.event_properties.linkText;
-
-          // Video Events
-          const videoId = event.event_properties.id;
           const videoTitle = event.event_properties.videoTitle;
+          const videoId = event.event_properties.id;
           const videoTime = event.event_properties.time;
           const videoDuration = event.event_properties.videoDuration;
           const videoPlayTime = event.event_properties.videoPlayTime;
@@ -123,10 +90,9 @@ export async function GET(request: Request) {
 
           let eventData: EventData = {
             userId,
-            anonId,
             eventTime: timeZone,
             eventType,
-            sessionIdClient,
+            sessionId,
             siteName,
             processedTime,
             cityLocation,
@@ -134,37 +100,7 @@ export async function GET(request: Request) {
           };
 
           switch (event.event_type) {
-            case 'Page InActivity - Client':
-              eventData.pageViewId = pageViewId;
-              eventData.pageName = pageName;
-              break;
-
-            case 'Page Entry - Client':
-              eventData.pageViewId = pageViewId;
-              eventData.pageName = pageName;
-              eventData.pathName = pathName;
-              eventData.pageReferrer = pageReferrer;
-              break;
-
-            case 'Page Exit - Client':
-              eventData.pageViewId = pageViewId;
-              eventData.totalDuration = totalDuration / 1000;
-              eventData.pageEngagement = pageEngagement / 1000;
-              break;
-
-            case 'Click Event - Client':
-              eventData.pageViewId = pageViewId;
-              eventData.pageName = pageName;
-              eventData.pathName = pathName;
-              eventData.pageDestination = pageDestination;
-              eventData.pageDestinationName = pageDestinationName;
-              eventData.clickType = clickType;
-              eventData.sectionTitle = sectionTitle;
-              eventData.linkText = linkText;
-              eventData.videoTitle = videoTitle;
-              break;
-
-            case 'Video Watched':
+            case 'Video Watched - Server':
               eventData.videoTitle = videoTitle;
               eventData.videoId = videoId;
               eventData.videoTime = videoTime;

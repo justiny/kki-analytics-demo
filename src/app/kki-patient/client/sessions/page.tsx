@@ -16,7 +16,6 @@ export default function SessionsClientPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const [sessionsPerPage, setSessionsPerPage] = useState(5); // default 5 sessions per page
   const { isLoading, error, data } = useClientData(
-    // '/api/mock/client/engagement',
     '/api/client/all',
     selectedDate,
     (fetchedData) => processSessions(fetchedData, siteName)

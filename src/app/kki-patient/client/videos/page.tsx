@@ -15,7 +15,7 @@ export default function VideosClientPage() {
   const siteName = patientTitle;
   const [selectedDate, setSelectedDate] = useState(calculateStartDate(2));
   const { isLoading, error, data } = useClientData(
-    '/api/client/videos',
+    '/api/videos/client',
     selectedDate,
     (fetchedData) => processVideos(fetchedData, siteName)
   );
@@ -32,8 +32,6 @@ export default function VideosClientPage() {
   if (error) return 'An error has occurred: ' + error.message;
 
   const tableData = data ? Object.values(data) : [];
-
-  console.log('tableData', tableData);
 
   return (
     <div className='px-4 sm:px-6 lg:px-8'>
