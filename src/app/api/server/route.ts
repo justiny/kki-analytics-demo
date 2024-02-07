@@ -23,7 +23,7 @@ export async function GET(request: Request) {
 
   try {
     const response = await fetch(
-      `${API_ENDPOINT}?start=${startDate2}&end=${endDate2}`,
+      `${API_ENDPOINT}?start=${startDate}&end=${endDate}`,
       {
         headers: {
           Authorization: `Basic ${Buffer.from(
