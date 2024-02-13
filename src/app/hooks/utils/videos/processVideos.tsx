@@ -1,6 +1,4 @@
 export const processVideos = (fetchedData: any[], siteName: string) => {
-  console.log('fetchedData', fetchedData);
-
   // Group by videoStartTime
   const groupedByStartTime = fetchedData.reduce((acc, currentValue) => {
     (acc[currentValue.videoStartTime] =

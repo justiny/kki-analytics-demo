@@ -1,14 +1,14 @@
 'use client';
 import { useState, useEffect } from 'react';
-import { consumerTitle } from '@helpers/utils/Globals';
-import { processEvents } from '@utils/engagement/processEvents';
-import { UserEngagementNotice } from '@helpers/utils/UserEngagementNotice';
+import { consumerTitle } from '@/app/hooks/utils/Globals';
+import { processEvents } from '@/app/hooks/utils/engagement/processEvents';
+import { UserEngagementNotice } from '@/app/hooks/utils/UserEngagementNotice';
 import { EngagementTable } from '@components/engagement/EngagementTable';
 import { ArrowPathIcon } from '@heroicons/react/24/outline';
 import { DownloadCsvButton } from '@components/utils/DownloadCsvButton';
 import { TableHeader } from '@components/table/TableHeader';
 import { useClientData } from '@hooks/useClientData';
-import calculateStartDate from '@helpers/utils/CalculateStartDate';
+import calculateStartDate from '@/app/hooks/utils/CalculateStartDate';
 import DateDropdown from '@components/DateDropdown';
 
 export default function EngagementPage() {
@@ -32,7 +32,11 @@ export default function EngagementPage() {
 
   if (error) return 'An error has occurred: ' + error.message;
 
-  const tableData = data ? Object.values(data) : [];
+  let tableData: any[] = data ? Object.values(data) : [];
+  tableData.sort(
+    (a: any, b: any) =>
+      Number(new Date(a.eventTime)) - Number(new Date(b.eventTime))
+  );
 
   return (
     <div className='px-4 sm:px-6 lg:px-8'>
@@ -50,16 +54,20 @@ export default function EngagementPage() {
         />
         <DateDropdown handleDateSelection={handleDateSelection} />
       </div>
-      {isLoading || tableData.length === 0 ? (
+      {isLoading ? (
         <div className='flex justify-center flex-col items-center'>
           <ArrowPathIcon className='animate-spin h-5 w-5' />
           <div className='text-xs mt-4'>Loading table data...</div>
         </div>
-      ) : (
-        <>
+      ) : tableData.length > 0 ? (
+        <div className='relative'>
           <EngagementTable clickData={tableData} />
           <UserEngagementNotice />
-        </>
+        </div>
+      ) : (
+        <div className='text-center text-gray-500'>
+          No data found for the selected date range.
+        </div>
       )}
     </div>
   );

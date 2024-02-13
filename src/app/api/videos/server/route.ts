@@ -3,8 +3,8 @@ import zlib from 'zlib';
 import JSZip from 'jszip';
 import { Buffer } from 'buffer';
 import { promisify } from 'util';
-import { getDefaultDates } from '@utils/DateUtils';
-import { timeZoneUtil } from '@utils/timeZoneUtil';
+import { getDefaultDates } from '@/app/hooks/utils/DateUtils';
+import { timeZoneUtil } from '@/app/hooks/utils/timeZoneUtil';
 import { EventData } from '../../../types/eventData';
 
 const gunzip = promisify(zlib.gunzip);
@@ -15,12 +15,12 @@ export async function GET(request: Request) {
   const SECRET_KEY = '4a3d4d72b960339acbc6510949755d4e';
   const { startDate, endDate } = getDefaultDates(request.url);
 
-  console.log('✅ startDate', startDate);
-  console.log('✅ endDate', endDate);
+  // console.log('✅ startDate', startDate);
+  // console.log('✅ endDate', endDate);
 
-  // 22 === 3:00 PM
-  const startDate2 = '20240201T23';
-  const endDate2 = '20240202T00';
+  // // 22 === 3:00 PM
+  // const startDate2 = '20240201T23';
+  // const endDate2 = '20240202T00';
 
   try {
     const response = await fetch(
@@ -59,8 +59,6 @@ export async function GET(request: Request) {
           if (event.event_type !== 'Video Watched - Server') {
             return;
           }
-
-          // console.log('event: ', event);
 
           // Native Event properties
           const userId = event.user_id;

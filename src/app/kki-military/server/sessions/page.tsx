@@ -1,13 +1,13 @@
 'use client';
 import { useState, useEffect } from 'react';
-import { militaryTitle } from '@helpers/utils/Globals';
-import { processSessionsServer } from '@utils/sessions/processSessionsServer';
+import { militaryTitle } from '@/app/hooks/utils/Globals';
+import { processSessionsServer } from '@/app/hooks/utils/sessions/processSessionsServer';
 import { SessionTable } from '@components/sessions/SessionTable';
 import { ArrowPathIcon } from '@heroicons/react/24/outline';
 import { DownloadCsvButton } from '@components/utils/DownloadCsvButton';
 import { TableHeader } from '@components/table/TableHeader';
 import { useClientData } from '@hooks/useClientData';
-import calculateStartDate from '@helpers/utils/CalculateStartDate';
+import calculateStartDate from '@/app/hooks/utils/CalculateStartDate';
 import DateDropdown from '@components/DateDropdown';
 
 export default function SessionsServerPage() {
@@ -58,8 +58,6 @@ export default function SessionsServerPage() {
       ) : (
         Object.entries(data).map(([sessionId, sessionData]: any) => {
           if (!sessionData.data) return null;
-
-          console.log('sessionData: ', sessionData);
 
           return (
             <div key={sessionId} className='relative mb-[80px]'>

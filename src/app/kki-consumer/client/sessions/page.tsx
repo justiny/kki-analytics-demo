@@ -1,13 +1,13 @@
 'use client';
 import { useState, useEffect } from 'react';
-import { consumerTitle } from '@helpers/utils/Globals';
-import { processSessions } from '@utils/sessions/processSessions';
+import { consumerTitle } from '@/app/hooks/utils/Globals';
+import { processSessions } from '@/app/hooks/utils/sessions/processSessions';
 import { SessionTable } from '@components/sessions/SessionTable';
 import { ArrowPathIcon } from '@heroicons/react/24/outline';
 import { DownloadCsvButton } from '@components/utils/DownloadCsvButton';
 import { TableHeader } from '@components/table/TableHeader';
 import { useClientData } from '@hooks/useClientData';
-import calculateStartDate from '@helpers/utils/CalculateStartDate';
+import calculateStartDate from '@/app/hooks/utils/CalculateStartDate';
 import DateDropdown from '@components/DateDropdown';
 
 export default function SessionsClientPage() {

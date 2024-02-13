@@ -2,27 +2,31 @@
 import { useState, useEffect } from 'react';
 import { patientTitle } from '@/app/hooks/utils/Globals';
 import { processEvents } from '@/app/hooks/utils/engagement/processEvents';
-import { EngagementTable } from '@components/engagement/EngagementTable';
 import { UserEngagementNotice } from '@/app/hooks/utils/UserEngagementNotice';
+import { EngagementTable } from '@components/engagement/EngagementTable';
 import { ArrowPathIcon } from '@heroicons/react/24/outline';
 import { DownloadCsvButton } from '@components/utils/DownloadCsvButton';
 import { TableHeader } from '@components/table/TableHeader';
 import { useClientData } from '@hooks/useClientData';
 import calculateStartDate from '@/app/hooks/utils/CalculateStartDate';
 import DateDropdown from '@components/DateDropdown';
+import AggregateUserEngagement from '@components/charts/AggregateUserEngagement';
+import ClickTypesBreakdown from '@components/charts/ClickTypesBreakdown';
+import UserClicksPerPage from '@components/charts/UserClicksPerPage';
+import EngagementJourney from '@/app/components/charts/EngagementJourney';
 
 export default function EngagementPage() {
   const siteName = patientTitle;
   const [selectedDate, setSelectedDate] = useState(calculateStartDate(1));
 
   const { isLoading, error, data } = useClientData(
-    '/api/server',
+    '/api/client',
     selectedDate,
-    (fetchedData) => processEvents(fetchedData, 'Server', siteName)
+    (fetchedData) => processEvents(fetchedData, 'Client', siteName)
   );
 
   useEffect(() => {
-    const documentTitle = `KKI ${patientTitle} | Engagement - Server`;
+    const documentTitle = `KKI ${patientTitle} | Engagement`;
     document.title = documentTitle;
   }, []);
 
@@ -32,28 +36,10 @@ export default function EngagementPage() {
 
   if (error) return 'An error has occurred: ' + error.message;
 
-  let tableData: any[] = data ? Object.values(data) : [];
-  tableData.sort(
-    (a: any, b: any) =>
-      Number(new Date(a.eventTime)) - Number(new Date(b.eventTime))
-  );
+  const tableData = data ? Object.values(data) : [];
 
   return (
-    <div className='px-4 sm:px-6 lg:px-8'>
-      <div className='sm:flex sm:items-center mb-20'>
-        <TableHeader
-          title={`KKI ${patientTitle}`}
-          subTitle='Engagement Data'
-          type='Server'
-          description='All engagement data for all KKI Patient users.'
-        />
-        <DownloadCsvButton
-          data={tableData}
-          fileName='patient-engagement-server-data.csv'
-          classes='rounded-full px-2 py-2 ring-1 ring-inset ring-gray-300 hover:bg-gray-50'
-        />
-        <DateDropdown handleDateSelection={handleDateSelection} />
-      </div>
+    <div className='px-4 sm:px-6 lg:px-10'>
       {isLoading ? (
         <div className='flex justify-center flex-col items-center'>
           <ArrowPathIcon className='animate-spin h-5 w-5' />
@@ -61,8 +47,17 @@ export default function EngagementPage() {
         </div>
       ) : tableData.length > 0 ? (
         <div className='relative'>
-          <EngagementTable clickData={tableData} />
-          <UserEngagementNotice />
+          <TableHeader
+            title={`KKI ${patientTitle}`}
+            subTitle='Engagement Charts'
+            type='Client'
+            description='A collection engagement data charts for all KKI Patient users.'
+          />
+          <AggregateUserEngagement data={tableData} />
+          <hr className='my-10' />
+          <ClickTypesBreakdown data={tableData} />
+          <hr className='my-10' />
+          <UserClicksPerPage data={tableData} />
         </div>
       ) : (
         <div className='text-center text-gray-500'>

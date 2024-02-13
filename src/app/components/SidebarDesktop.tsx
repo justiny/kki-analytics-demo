@@ -9,6 +9,7 @@ import {
   Square3Stack3DIcon,
   ArrowRightIcon,
   SparklesIcon,
+  ChartBarIcon,
 } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import { useUser } from '@auth0/nextjs-auth0/client';
@@ -62,6 +63,15 @@ const navigation = [
         name: 'Videos',
         href: '/kki-patient/server/videos',
         label: 'Server',
+      },
+      {
+        divider: true,
+      },
+      {
+        icon: <ChartBarIcon className='h-5 w-5 mr-2' />,
+        name: 'Charts',
+        href: '/kki-patient/client/charts',
+        label: 'Engagement',
       },
     ],
   },

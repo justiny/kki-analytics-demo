@@ -47,9 +47,6 @@ function useServerDateRange() {
 
   const { startDate, endDate } = getDateRange(dateRange);
 
-  // console.log('startDate', startDate);
-  // console.log('endDate', endDate);
-
   const fetchPatientData = async ({ queryKey }: any) => {
     const [_, startDate, endDate] = queryKey;
 

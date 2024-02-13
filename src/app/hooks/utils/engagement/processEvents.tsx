@@ -93,10 +93,7 @@ export const processEvents = (
           processedEvent.eventTime = event.eventTime;
           processedEvent.pageReferrer = event.pageReferrer || '';
           hasPageEntry = true;
-        } else if (
-          event.eventType === `Page Exit - ${environment}` ||
-          event.eventType === 'Page Exit - Unload'
-        ) {
+        } else if (event.eventType === `Page Exit - ${environment}`) {
           processedEvent.totalDuration += event.totalDuration || 0;
           processedEvent.pageEngagement += event.pageEngagement || 0;
           hasPageExit = true;

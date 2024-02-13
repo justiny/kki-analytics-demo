@@ -3,8 +3,8 @@ import zlib from 'zlib';
 import JSZip from 'jszip';
 import { Buffer } from 'buffer';
 import { promisify } from 'util';
-import { getDefaultDates } from '@utils/DateUtils';
-import { timeZoneUtil } from '@utils/timeZoneUtil';
+import { getDefaultDates } from '@/app/hooks/utils/DateUtils';
+import { timeZoneUtil } from '@/app/hooks/utils/timeZoneUtil';
 import { EventData } from '../../types/eventData';
 
 const gunzip = promisify(zlib.gunzip);
@@ -15,11 +15,11 @@ export async function GET(request: Request) {
   const SECRET_KEY = '4a3d4d72b960339acbc6510949755d4e';
   const { startDate, endDate } = getDefaultDates(request.url);
 
-  const startDate2 = '20240206T23';
-  const endDate2 = '20240209T00';
+  // const startDate2 = '20240213T08';
+  // const endDate2 = '20240214T20';
 
-  console.log('✅ startDate', startDate);
-  console.log('✅ endDate', endDate);
+  // console.log('✅ startDate', startDate);
+  // console.log('✅ endDate', endDate);
 
   try {
     const response = await fetch(
