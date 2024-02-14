@@ -32,7 +32,7 @@ export const processEvents = (
   siteName: string
 ): ProcessedEvent[] => {
   const filteredData = fetchedData.filter(
-    (event) => event.siteName === siteName
+    (event) => event.siteName === siteName || 'Patient'
   );
 
   // First, identify all authenticated userIds within each sessionId
